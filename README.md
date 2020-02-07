@@ -1,7 +1,7 @@
 # password-spraying
 
-@settings {
-  font-size: 100;
+element {
+  font-size: 75;
   cmeautom
 }
 cmeautom
