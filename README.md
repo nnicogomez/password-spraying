@@ -2,7 +2,6 @@
 
 element {
   font-size: 75;
-  cmeautom
 }
 cmeautom
 cmeautom is a tool that allows test password policy of internal active directory. Usually, ADs have rules that block user account after a number of login wrong attemps. cmeautom controls the time of attempts and the number of attempts in order to perform the test without blocking the user accounts.
