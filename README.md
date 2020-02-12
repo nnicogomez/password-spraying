@@ -2,7 +2,7 @@
 
 ## ngspraying
             
-![alt text](https://github.com/nnicogomez/password-spraying/blob/master/images/ngsp.PNG"Logo ngspraying")
+![alt text](https://github.com/nnicogomez/password-spraying/blob/master/images/ngsp.PNG "Logo ngspraying")
 
 
 ### Description
