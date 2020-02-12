@@ -1,15 +1,12 @@
 # password-spraying
 
 ## ngspraying
-
-`
                                        _             
  _ __   __ _ ___ _ __  _ __ __ _ _   _(_)_ __   __ _ 
 | '_ \ / _` / __| '_ \| '__/ _` | | | | | '_ \ / _` |
 | | | | (_| \__ \ |_) | | | (_| | |_| | | | | | (_| |
 |_| |_|\__, |___/ .__/|_|  \__,_|\__, |_|_| |_|\__, |
        |___/    |_|              |___/         |___/ 
-`
 
 ### Description
 ngspraying is a linux tool that allows test passwords policy of an internal active directory. Usually, ADs have rules that block user account after a number of wrong login attempts. cmeautom controls the time of attempts and the number of attempts, in order to perform the test without blocking the users account.
