@@ -49,14 +49,18 @@ Client domain. e.g: ENTERPRISE.LOCAL\n"
     `./ngspraying.sh clientUserFile passwordsDictionary 5 10 192.168.0.0 24 TEST.LOCAL`
     
     
-## passgen.sh
+## genpass.sh
+
+![alt text](https://github.com/nnicogomez/password-spraying/blob/master/images/gpss.PNG "Logo genpass.sh")
 
 ### Description
-You could generate a custom dictionary.
+This it a very little linux tool which allows to an user to create a password dictionary. Entering a word, the tool will generate possible and simple combinations to test in a password spraying. **This is a complement to a much larger dictionary. The output of this tool DONT is a complete dictionary**
+
+### Synopsys
+Normally, client users set a lack of complexity password, using a short password with a main-word that allows the user to remember the password easily. For example, an user that works in FALSECOMPANY could set passwords using this word with the password main-word. The purpose of genpass.sh is create a dictionary in order to cover this point. 
 
 ### Usage:
 `./genpass.sh WORD`
-
 
 # Copyright
 ngspraying.sh - A linux tool to perform password spraying attacks.
