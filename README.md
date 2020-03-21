@@ -19,7 +19,6 @@ ngspraying is a linux tool that allows test passwords policy of an internal acti
 	`cd /opt && git clone https://github.com/nnicogomez/password-spraying.git`
 2. Install dependencies.
 	`./requirements.txt`
-3. After that, download ngspraying.sh file and run the application. 
 	
 ### Usage:
 	` ./ngspraying.sh -uf Users_accounts_file -pd Password_dictionary -a attempts_number -bt Block_time -n Network -m Mask -d Domain `
