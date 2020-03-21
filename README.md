@@ -9,10 +9,10 @@
 ngspraying is a linux tool that allows test passwords policy of an internal active directory. Usually, ADs have rules that block user account after a number of wrong login attempts. cmeautom controls the time of attempts and the number of attempts, in order to perform the test without blocking the users account.
 
 ### Features:
-. Application controls login attempts.
-. Application dont perform login attempts with users already found.
-. Application allows manual configuration of password complexity.
-. Application make backup of input-files.
+- Application controls login attempts.
+- Application dont perform login attempts with users already found.
+- Application allows manual configuration of password complexity.
+- Application make backup of input-files.
 
 ### Installation:
 Step 1) We should install the dependencies.
