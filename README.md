@@ -8,16 +8,18 @@
 ### Description
 ngspraying is a linux tool that allows test passwords policy of an internal active directory. Usually, ADs have rules that block user account after a number of wrong login attempts. cmeautom controls the time of attempts and the number of attempts, in order to perform the test without blocking the users account.
 
-### Features:
+### Key Features:
 - Application controls login attempts.
 - Application dont perform login attempts with users already found.
 - Application allows manual configuration of password complexity.
 - Application make backup of input-files.
 
 ### Installation:
-1. We should install the dependencies.
+1. Clone repo.
+	`cd /opt && git clone https://github.com/nnicogomez/password-spraying.git`
+2. Install dependencies.
 	`./requirements.txt`
-2. After that, download ngspraying.sh file and run the application. 
+3. After that, download ngspraying.sh file and run the application. 
 	
 ### Usage:
 	` ./ngspraying.sh -uf Users_accounts_file -pd Password_dictionary -a attempts_number -bt Block_time -n Network -m Mask -d Domain `
@@ -45,7 +47,7 @@ Client domain. e.g: ENTERPRISE.LOCAL\n"
 - Set password policy parameters using the WS version.
 - Expand error codes
 - Add crackmapexec call using a file
-- .
+- Add docker use option.
 
 ### WS Password Complexity rules
 If Password complexity is enabled on domain controller, the following will be the password requirements:
