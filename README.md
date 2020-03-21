@@ -20,7 +20,7 @@ Step 1) We should install the dependencies.
 Step 2) After that, download ngspraying.sh file and run the application. 
 	
 ### Usage:
-	`./ngspraying.sh [Users accounts file] [Password dictionary] [Attempts] [Block time] [Network] [Mask] [Domain]`
+	` ./ngspraying.sh -uf Users_accounts_file -pd Password_dictionary -a attempts_number -bt Block_time -n Network -m Mask -d Domain `
 
 ### Parameters
 
@@ -46,7 +46,7 @@ Network mask. e.g: 24.
 Client domain. e.g: ENTERPRISE.LOCAL\n"
 
 ### Typical invoke
-    `./ngspraying.sh clientUserFile passwordsDictionary 5 10 192.168.0.0 24 TEST.LOCAL`
+    `./ngspraying.sh -uf clientUserFile -pd passwordsDictionary -a 5 -bt 10 -n 192.168.0.0 -m 24 -d TEST.LOCAL`
     
     
 ## genpass.sh
