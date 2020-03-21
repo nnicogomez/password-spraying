@@ -47,7 +47,50 @@ Client domain. e.g: ENTERPRISE.LOCAL\n"
 
 ### Typical invoke
     `./ngspraying.sh -uf clientUserFile -pd passwordsDictionary -a 5 -bt 10 -n 192.168.0.0 -m 24 -d TEST.LOCAL`
-    
+### To do
+- Detailed HTML Output.
+- Set password policy parameters using the WS version.
+- Expand error codes
+- Add crackmapexec call using a file
+- .
+
+### WS Password Complexity rules
+If Password complexity is enabled on domain controller, the following will be the password requirements:
+
+Windows Server 2016
+Passwords must be at least six characters in length.
+English uppercase characters (A through Z).
+English lowercase characters (a through z).
+Base 10 digits (0 through 9).
+Non-alphabetic characters (for example, !, $, #, %)
+
+Windows Server 2012 and 2012 R2
+6 caracteres
+Passwords must be at least six characters in length.
+English uppercase characters (A through Z).
+English lowercase characters (a through z).
+Base 10 digits (0 through 9).
+Non-alphabetic characters (for example, !, $, #, %)
+
+Windows Server 2003
+https://www.tacktech.com/display.cfm?ttid=354
+Has at least 6 characters
+Does not contain "Administrator" or "Admin"
+Contains characters from three of the following categories:
+Uppercase letters (A, B, C, and so on)
+Lowercase letters (a, b, c, and so on)
+Numbers (0, 1, 2, and so on)
+Non-alphanumeric characters (#, &, ~, and so on)
+
+Windows Server 2008 and 2008 R2
+https://thebackroomtech.com/2008/03/10/windows-server-2008-password-complexity-requirements/
+Passwords cannot contain the user’s account name or parts of the user’s full name that exceed two consecutive characters.
+Passwords must be at least six characters in length.
+Passwords must contain characters from three of the following four categories:
+English uppercase characters (A through Z).
+English lowercase characters (a through z).
+Base 10 digits (0 through 9).
+Non-alphabetic characters (for example, !, $, #, %)
     
 ## genpass.sh
 
