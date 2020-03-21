@@ -21,27 +21,20 @@ ngspraying is a linux tool that allows test passwords policy of an internal acti
 	
 ### Usage:
 	` ./ngspraying.sh -uf Users_accounts_file -pd Password_dictionary -a attempts_number -bt Block_time -n Network -m Mask -d Domain `
-
 ### Parameters
 
 #### Users account file:	 
 Active Directory users. Format: Only the user account, without the domain (e.g domain\user or user@domain is not correct. Only write the "user" is correct). One user by line.
-
 #### Password dictionary:
 Password file. Format: One password by line.
-
 #### Attemps:	
 Required attemtps to block the users account. If the account will be block after five (5) wrong attempts (This means, the 6th attemp wont be possible because the account was blocked) in ten (10) minutes, we should enter five (5)."
-
 #### Block time:	
 Window time to catch wrong login attempts. Following previously example; if the account will be block after x wrong attempts in 10 minutes, we should enter ten (10).
-
 #### Network:	 
 Protocol: IPv4. e.g: 192.168.0.0.
-
 #### Mask:	
 Network mask. e.g: 24.
-
 #### Domain: 	
 Client domain. e.g: ENTERPRISE.LOCAL\n"
 
