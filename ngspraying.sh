@@ -1,4 +1,5 @@
 #! /bin/bash
+# ./ngspraying.sh -uf Users_account_file -pd Password dictionary -a attempts number -bt Block time -n Network -m Mask -d Domain [-pc]
 EMPTYPARAMETERS=100
 HELP_REQUESTED=101
 ATTEMPTS_ARG_ERROR=102
@@ -6,6 +7,9 @@ BLOCKTIME_ARG_ERROR=103
 NETWORK_ARG_ERROR=104
 DOMAIN_ARG_ERROR=105
 MASK_DOMAIN_ERROR=106
+CONFIGURATION_FILE_NOT_EXISTS=107
+USERS_FILE_NOT_EXISTS=108
+PWD_FILE_NOT_EXISTS=109
 
 : '
 
@@ -52,7 +56,7 @@ function usage {
 	#figlet ngspraying
 	banner ngspraying
 	echo -e "\nngspraying is a tool that allows test passwords policy of an internal active directory. Usually, Active Directories have rules that block user accounts after a number of wrong login attempts. ngspraying controls the time of attempts and the number of attempts, in order to perform the test without blocking the users account. This is so util in internal network assessment, where the script could be ran in background while the penetration tester continues working."
-	echo -e "Features: . Application controls login attempts.\n. Application dont perform login attempts with users already found.\n. Application allows manual configuration of password complexity.\n. Application make backup of input-files.\n\n"
+	echo -e "Features: \n. Application controls login attempts.\n. Application dont perform login attempts with users already found.\n. Application allows manual configuration of password complexity.\n. Application make backup of input-files.\n\n"
 	echo -e "Usage:"
 	echo -e "All the parameters below are mandatory:\n./ngspraying.sh -uf Users_account_file -pd Password dictionary -a attempts number -bt Block time -n Network -m Mask -d Domain\n\n***************************************************\n"
 	echo -e "Parameters\n"
@@ -68,27 +72,73 @@ function usage {
 	exit $HELP_REQUESTED
 	}
 
-function passwordComplexity(){
-	read -p "Minimum number of characters: " carac1
-	read -p "Maximum number of characters: " carac2
-	read -p "Number required? Y/N: " numeros
-	read -p "Capital letter required? Y/N: " mayus
-	read -p "Special character required?: Y/N: " simb
+function setPasswordDefaultComplexity(){
+	carac1=6
+	carac2=20
+	numeros="N"
+	mayus="N"
+	simb="N"
+	same_than_user="N"
+	modifyPasswordFile $2 $carac1 $carac2 $numeros $mayus $simb $same_than_user
+}
 
-	grep -E "^.{$carac1,$carac2}$" $1 >> pass.tmp
+
+function log(){
+	
+	path="logs/logs_$(date +%Y-%m-%d)"
+	if [[ ! -f  $path ]]; then
+		if [[ ! -d  "logs" ]]; then
+		mkdir logs
+		fi
+		touch "logs/logs_$(date +%Y-%m-%d)"
+		echo "---------------------------------------------------NEW SESSION------------------------------------------------------" >> $path
+	fi
+	echo "$1" >> $path
+}
+
+function passwordComplexity(){
+		array=(6,20,"N","N","N","N")
+		if [[ $1 == "Y" ]]; then
+		log "Password complexity module - START"
+		log "Using NGCONFIG.cfg"
+
+		if [[ ! -f "NGCONFIG.cfg" ]]; then
+			showErrorAndExit $CONFIGURATION_FILE_NOT_EXISTS
+		fi
+		i=0
+		while  IFS=: read -ra lines; do
+			array[$i]=$lines
+			let i=i+1	
+		done < "NGCONFIG.cfg"
+		modifyPasswordFile $2 ${array[0]} ${array[1]} ${array[2]} ${array[3]} ${array[4]} ${array[5]}
+	else
+		setPasswordDefaultComplexity $2 
+	fi	
+}
+
+function modifyPasswordFile(){
+grep -E "^.{$carac1,$carac2}$" $1 >> pass.tmp
 	rm $1
 	mv pass.tmp $1
 
-	if [[ $mayus == "Y" || $mayus == "y" ]]; then
+	if [[ $mayus != "Y" || $mayus == "y" ]]; then
 		sed -ni '/[A-Z]/p' $1
 	fi
 	if [[ $numeros == 'Y' || $numeros == "y" ]]; then
 		sed -ni '/[0-9]/p' $1
 	fi
 	if [[ $simb == 'Y' || $simb == 'y' ]]; then
-		sed -ni '/[!@#$&()\\-`.+,/\]/p' $1
-	fi	
-	clear
+		sed -ni '/[!@#$&()\\-`.+,/\]/p' $2
+	fi
+
+	echo "Password complexity:
+	Min Char: $2
+	Max char: $3
+	At least one number: $4
+	At least one capital letter: $5
+	At least one symbol: $5
+	Password could include username: $6" 
+	echo -e "Passwords file was modified accord to the aforementioned rules\n\n"
 }
 
 
@@ -128,6 +178,18 @@ function showErrorAndExit(){
       echo "Domain is not a string"
       exit $DOMAIN_ARG_ERROR
       ;;
+	$CONFIGURATION_FILE_NOT_EXISTS)
+      echo "Configuration file NGCONFIG.txt not exists"
+      exit $CONFIGURATION_FILE_NOT_EXISTS
+      ;;
+	$USERS_FILE_NOT_EXISTS)
+      echo "Users file not exists"
+      exit $USERS_FILE_NOT_EXISTS
+      ;;
+	$PWD_FILE_NOT_EXISTS)
+      echo "Passwords file not exists"
+      exit $PWD_FILE_NOT_EXISTS
+      ;;
     -*)
 	  break;
       ;;
@@ -137,6 +199,19 @@ function showErrorAndExit(){
 function emptyArguments(){
 	if [[ $1 == "" ||  $2 == "" || $3 == "" || $4 == "" || $5 == "" || $6 == "" || $7 == "" ]]; then
 	showErrorAndExit $EMPTYPARAMETERS
+	fi
+}
+
+function users_validation(){
+	if [[ ! -f $1 ]]; then
+		echo "hola"
+		showErrorAndExit $USERS_FILE_NOT_EXISTS
+	fi
+}
+
+function pwd_validation(){
+	if [[ ! -f $1 ]]; then
+		showErrorAndExit $PWD_FILE_NOT_EXISTS
 	fi
 }
 
@@ -207,6 +282,7 @@ block_time=""
 network=""
 mask=""
 domain=""
+p_c="N"
 
 if [ $# == 0 ]; then
 usage
@@ -218,39 +294,43 @@ do
 		-h|--help|--h)
 		usage
 		;;
-		-uf)
+		-uf|--users-file)
 			users_file=$2
 		shift
 		shift
 		;;
-		-pd)
+		-pd|--passwords-file)
 			pwd_file=$2
 		shift
 		shift
 		;;
-		-a)
+		-a|--attempts)
 			attempts=$2
 		shift
 		shift
 		;;
-		-bt)
+		-bt|--block-time)
 			block_time=$2
 		shift
 		shift
 		;;
-		-n)
+		-n|--network)
 			network=$2
 		shift
 		shift
 		;;
-		-m)
+		-m|--mask)
 			mask=$2
 		shift
 		shift
 		;;
-		-d)
+		-d|--domain)
 			domain=$2
 		shift
+		shift
+		;;
+		-pc|--password-complexity)
+		p_c="Y"
 		shift
 		;;
 		*)
@@ -260,7 +340,18 @@ do
   esac
 done
 
+log "User file: $users_file"
+log "Passwords file: $pwd_file"
+log "Attempts: $attempts"
+log "Block time: $block_time"
+log "Network: $network"
+log "Mask: $mask"
+log "Domain: $domain"
+log "Complexity: $p_cs" 
+
 emptyArguments $users_file $pwd_file $attempts $block_time $network $mask $domain
+users_validation $users_file
+pwd_validation $pwd_file
 attempts_validation $attempts
 block_time_validation $block_time
 network_validation $network
@@ -272,11 +363,8 @@ center " ngspraying "
 
 cp $users_file $users_file.bak
 cp $pwd_file $pwd_file.bak
-read -p "Do you want to enter password complexity values? (net account /domain could help you...) Y/N: " value_d
-if [[ $value_d == "Y" || $value_d == "y" || $value_d == 'Y' || $value_d == 'y' ]]; then
-passwordComplexity $2
-else clear
-fi
+
+passwordComplexity $p_c $pwd_file
 #################### VALIDACIONES
 
 #################### MAIN
@@ -319,6 +407,7 @@ i=1
 k=0
 tamano=$(wc -w $users_file)
 tam="${tamano:0:1}"
+finallogscript="logs/successfull_login_attempts_$(date +%Y-%m-%d)"
 
 center " $inte attempts will be made every $block_time minutes($tiempo seconds). Target: $domain"
 while [[ "$i" -lt "$attempts" && "$k" -lt "$tam" ]];
@@ -352,8 +441,8 @@ do
 	if [[ "$i" == "$attempts" ]]
 	then
 		i=1
-		echo -e "\e[1;36m Sleeping $block_time minutes ($tiempo seconds) \e[0\m"
-		sleep $tiempo #X tiempo va a permanecer esperando el script
+		echo -e "\e[1;36mSleeping $block_time minutes ($time seconds)\e[0\m"
+		sleep $time
 	fi
 done < "$pwd_file"
 
@@ -372,5 +461,4 @@ if [[ -f ultimos.tmp ]]; then
 		cp "$archPw.tmp" "$archPw"
 		rm "$archPw.tmp"
 	fi
-#################### MAIN
 
