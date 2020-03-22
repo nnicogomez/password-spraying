@@ -21,7 +21,7 @@ ngspraying is a linux tool that allows test passwords policy of an internal acti
 	`./requirements.txt`
 	
 ### Usage:
-	` ./ngspraying.sh -uf Users_accounts_file -pd Password_dictionary -a attempts_number -bt Block_time -n Network -m Mask -d Domain `
+	` ./ngspraying.sh -uf Users_accounts_file -pd Password_dictionary -a attempts_number -bt Block_time -n Network -m Mask -d Domain [-pc] `
 ### Parameters
 
 #### Users account file:	 
@@ -39,6 +39,8 @@ Protocol: IPv4. e.g: 192.168.0.0.
 Network mask. e.g: 24.
 #### Domain: 	
 Client domain. e.g: ENTERPRISE.LOCAL\n"
+#### Password Complexity
+Boolean parameter that indicates if the target domain controller has "Password complexity" enabled. When this flag is used the script works with the password complexity associated to pc/NGCONFIG.cfg. By default, the non-complexity is 6 characters without required numbers, capital letters, special characters.
 
 ### Typical invoke
     `./ngspraying.sh -uf clientUserFile -pd passwordsDictionary -a 5 -bt 10 -n 192.168.0.0 -m 24 -d TEST.LOCAL`
