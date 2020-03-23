@@ -100,16 +100,16 @@ function passwordComplexity(){
 		array=(6,20,"N","N","N","N")
 		if [[ $1 == "Y" ]]; then
 		log "Password complexity module - START"
-		log "Using NGCONFIG.cfg"
+		log "Using pc/NGCONFIG.cfg"
 
-		if [[ ! -f "NGCONFIG.cfg" ]]; then
+		if [[ ! -f "pc/NGCONFIG.cfg" ]]; then
 			showErrorAndExit $CONFIGURATION_FILE_NOT_EXISTS
 		fi
 		i=0
 		while  IFS=: read -ra lines; do
 			array[$i]=$lines
 			let i=i+1	
-		done < "NGCONFIG.cfg"
+		done < "pc/NGCONFIG.cfg"
 		modifyPasswordFile $2 ${array[0]} ${array[1]} ${array[2]} ${array[3]} ${array[4]} ${array[5]}
 	else
 		setPasswordDefaultComplexity $2 
@@ -420,8 +420,7 @@ do
 					resultado=$(crackmapexec smb ${network}/${mask} -u $lines -p $line -d $domain --shares)
 					echo -e "$resultado \n" >> logCME
 					echo "$resultado"| while read linea; do
-						if [[ $linea == *"Enumerating shares"* ]]
-						then
+						if [[ $linea == *"Enumerating shares"* ]]; then
 							sed -i "s/\<$lines\>//g" $users_file ## Aca deberiamos eliminar la palabra del archivo.	
 							sed -i '/^ *$/d' $users_file
 							final=$(echo $linea | sed 's/^[^0-9]*\(.*\)/\1/')
