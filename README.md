@@ -1,5 +1,9 @@
 # password-spraying
 
+Password spraying is an attack that attempts to access a large number of accounts (usernames) with a few commonly used passwords. Traditional brute-force attacks attempt to gain unauthorized access to a single account by guessing the password. This can quickly result in the targeted account getting locked-out, as commonly used account-lockout policies allow for a limited number of failed attempts (typically three to five) during a set period of time. During a password-spray attack (also known as the “low-and-slow” method), the attacker attempts a single commonly used password (such as ‘Password1’ or ‘Welcome19’) against many accounts before moving on to attempt a second password, and so on.
+
+# Tools
+
 ## ngspraying
             
 ![alt text](https://github.com/nnicogomez/password-spraying/blob/master/images/ngsp.PNG "Logo ngspraying")
