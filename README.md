@@ -100,7 +100,16 @@ This it a very little linux tool which allows to an user to create a password di
 Normally, client users set a lack of complexity password, using a short password with a main-word that allows the user to remember the password easily. For example, an user that works in FALSECOMPANY could set passwords using this word with the password main-word. The purpose of genpass.sh is create a dictionary in order to cover this point. 
 
 ### Usage:
-`./genpass.sh WORD`
+`./genpass.sh WORD [-d dictionary] [-o output]`
+
+### Parameters
+
+#### WORD:	
+Dictionary's main word (e.g. Company name)
+#### Dictionary
+A list of words to merge with the aforementioned main word. Optional parameter.
+#### Output
+Output path. If it is not indicated, application save the output in application's root directory.
 
 # Copyright
 ngspraying.sh - A linux tool to perform password spraying attacks.
